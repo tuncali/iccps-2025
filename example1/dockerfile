@@ -1,0 +1,21 @@
+# Use a lightweight Python base image
+FROM python:3.9-slim
+
+# Install dependencies
+RUN apt-get update && apt-get install -y git
+
+# Clone the repository at the DOI-linked commit
+RUN git clone https://github.com/tuncali/iccps-2025.git && \
+    cd iccps-2025 && \
+    git checkout b370658  # Replace with commit hash from DOI release
+
+# Set the working directory
+WORKDIR /iccps-2025/example1
+
+# Copy the requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+# Set the default command
+CMD ["python", "factorial.py", "5"]
+
